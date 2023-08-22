@@ -16,7 +16,7 @@ from models.state import State
 from models.user import User
 import json
 import os
-import pep8
+import pycodestyle as pep8
 import unittest
 DBStorage = db_storage.DBStorage
 classes = {"Amenity": Amenity, "City": City, "Place": Place,
@@ -86,3 +86,39 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get(self):
+        """Test retrieving an object by class and ID"""
+        new_state = State(name="California")
+        models.storage.new(new_state)
+        models.storage.save()
+        state_id = new_state.id
+        retrieved_state = models.storage.get(State, state_id)
+        self.assertEqual(retrieved_state, new_state)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_get_nonexistent(self):
+        """Test retrieving a nonexistent object"""
+        nonexistent_state = models.storage.get(State, "nonexistent_id")
+        self.assertIsNone(nonexistent_state)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count_all(self):
+        """Test counting all objects in storage"""
+        initial_count = models.storage.count()
+        new_state = State(name="New York")
+        models.storage.new(new_state)
+        models.storage.save()
+        updated_count = models.storage.count()
+        self.assertEqual(updated_count, initial_count + 1)
+
+    @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+    def test_count_specific_class(self):
+        """Test counting objects of a specific class in storage"""
+        initial_count = models.storage.count(State)
+        new_state = State(name="Texas")
+        models.storage.new(new_state)
+        models.storage.save()
+        updated_count = models.storage.count(State)
+        self.assertEqual(updated_count, initial_count + 1)
