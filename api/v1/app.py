@@ -1,7 +1,5 @@
 #!/usr/bin/python3
-"""
-
-"""
+"""This script defines a Flask web application for an API."""
 from flask import Flask
 from models import storage
 from api.v1.views import app_views
