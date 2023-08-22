@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """This script defines a Flask web application for an API."""
 from flask import Flask
+from flask import jsonify
 from models import storage
 from api.v1.views import app_views
 import os
@@ -10,6 +11,11 @@ app = Flask(__name__)
 
 # Register the blueprint
 app.register_blueprint(app_views)
+
+
+@app.errorhandler(404)
+def _handle_api_error(exception):
+    return jsonify(error="Not found")
 
 
 @app.teardown_appcontext
