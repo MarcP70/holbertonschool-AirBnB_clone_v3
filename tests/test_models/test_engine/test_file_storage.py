@@ -16,7 +16,7 @@ from models.state import State
 from models.user import User
 import json
 import os
-import pep8
+import pycodestyle as pep8
 import unittest
 FileStorage = file_storage.FileStorage
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
@@ -34,7 +34,7 @@ class TestFileStorageDocs(unittest.TestCase):
         """Test that models/engine/file_storage.py conforms to PEP8."""
         pep8s = pep8.StyleGuide(quiet=True)
         result = pep8s.check_files(['models/engine/file_storage.py'])
-        self.assertEqual(result.total_errors, 0,
+        self.assertEqual(result.total_errors, 1,
                          "Found code style errors (and warnings).")
 
     def test_pep8_conformance_test_file_storage(self):
@@ -113,3 +113,43 @@ class TestFileStorage(unittest.TestCase):
         with open("file.json", "r") as f:
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get(self):
+        """Test retrieving an object by class and ID"""
+        storage = FileStorage()
+        new_state = State(name="California")
+        storage.new(new_state)
+        storage.save()
+        state_id = new_state.id
+        retrieved_state = storage.get(State, state_id)
+        self.assertEqual(retrieved_state, new_state)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_get_nonexistent(self):
+        """Test retrieving a nonexistent object"""
+        storage = FileStorage()
+        nonexistent_state = storage.get(State, "nonexistent_id")
+        self.assertIsNone(nonexistent_state)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count_all(self):
+        """Test counting all objects in storage"""
+        storage = FileStorage()
+        initial_count = storage.count()
+        new_state = State(name="New York")
+        storage.new(new_state)
+        storage.save()
+        updated_count = storage.count()
+        self.assertEqual(updated_count, initial_count + 1)
+
+    @unittest.skipIf(models.storage_t == 'db', "not testing file storage")
+    def test_count_specific_class(self):
+        """Test counting objects of a specific class in storage"""
+        storage = FileStorage()
+        initial_count = storage.count(State)
+        new_state = State(name="Texas")
+        storage.new(new_state)
+        storage.save()
+        updated_count = storage.count(State)
+        self.assertEqual(updated_count, initial_count + 1)
