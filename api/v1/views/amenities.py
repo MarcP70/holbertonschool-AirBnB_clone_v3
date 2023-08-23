@@ -1,50 +1,21 @@
-#!/bin/usr/python3
+#!/usr/bin/python3
 """
-This code snippet defines two Flask routes for handling GET
-requests related to amenities. The first route, '/amenities',
-returns a JSON response containing all the amenities stored
-in the database. The second route, '/amenities/<amenity_id>',
-returns a JSON response containing the details of a specific
-amenity identified by its ID.
+This code snippet defines several Flask routes for handling CRUD operations on the Amenity model.
 
-Example Usage:
-    # GET request to '/amenities'
-    # Response: JSON containing all amenities
-    GET /amenities
-    Response:
-    [
-        {
-            "id": "1",
-            "name": "Swimming Pool"
-        },
-        {
-            "id": "2",
-            "name": "Gym"
-        },
-        ...
-    ]
+The available routes are:
+- GET /amenities: Retrieve all amenities from the database and return a JSON response.
+- GET /amenities/<amenity_id>: Retrieve the details of a specific amenity identified by its ID and return a JSON response.
+- DELETE /amenities/<amenity_id>: Delete an Amenity object from the storage.
+- POST /amenities: Create a new Amenity object using the data from the request body and return a JSON response.
+- PUT /amenities/<amenity_id>: Update an existing Amenity object with the specified ID using the data from the request body and return a JSON response.
 
-    # GET request to '/amenities/1'
-    # Response: JSON containing details of amenity with ID 1
-    GET /amenities/1
-    Response:
-    {
-        "id": "1",
-        "name": "Swimming Pool"
-    }
+Each route has its own function with a docstring explaining its purpose, inputs, and outputs.
 
-Inputs:
-    - "GET request to '/amenities'"
-    - "GET request to '/amenities/<amenity_id>' where <amenity_id>
-    is the ID of a specific amenity
+Example usage and expected responses are provided in the code explanation.
 
-Outputs:
-    - For the '/amenities' route, a JSON response containing all the
-    amenities stored in the database.
-    - For the '/amenities/<amenity_id>' route, a JSON response
-    containing the details of the specified amenity. If the amenity
-    does not exist, a 404 error is returned.
+Note: The code snippet assumes the existence of the necessary imports and the Flask app_views blueprint.
 """
+
 
 from api.v1.views import app_views
 from flask import jsonify, request, abort
