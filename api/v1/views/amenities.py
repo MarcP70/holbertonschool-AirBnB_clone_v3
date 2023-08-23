@@ -1,27 +1,32 @@
 #!/usr/bin/python3
 """
-This code snippet defines several Flask routes for handling CRUD operations on the Amenity model.
+This code snippet defines several Flask routes for handling
+CRUD operations on the Amenity model.
 
 The available routes are:
-- GET /amenities: Retrieve all amenities from the database and return a JSON response.
-- GET /amenities/<amenity_id>: Retrieve the details of a specific amenity identified by its ID and return a JSON response.
+- GET /amenities: Retrieve all amenities from the database and
+return a JSON response.
+- GET /amenities/<amenity_id>: Retrieve the details of a specific
+amenity identified by its ID and return a JSON response.
 - DELETE /amenities/<amenity_id>: Delete an Amenity object from the storage.
-- POST /amenities: Create a new Amenity object using the data from the request body and return a JSON response.
-- PUT /amenities/<amenity_id>: Update an existing Amenity object with the specified ID using the data from the request body and return a JSON response.
+- POST /amenities: Create a new Amenity object using the data from the
+request body and return a JSON response.
+- PUT /amenities/<amenity_id>: Update an existing Amenity object with the
+specified ID using the data from the request body and return a JSON response.
 
-Each route has its own function with a docstring explaining its purpose, inputs, and outputs.
+Each route has its own function with a docstring explaining its purpose,
+inputs, and outputs.
 
 Example usage and expected responses are provided in the code explanation.
 
-Note: The code snippet assumes the existence of the necessary imports and the Flask app_views blueprint.
+Note: The code snippet assumes the existence of the necessary imports and
+the Flask app_views blueprint.
 """
 
 
 from api.v1.views import app_views
 from flask import jsonify, request, abort
 from models import storage
-from models.state import State
-from models.city import City
 from models.amenity import Amenity
 import json
 
