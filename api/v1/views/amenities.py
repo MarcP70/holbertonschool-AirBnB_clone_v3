@@ -77,11 +77,11 @@ def delete_amenity(amenity_id):
         404: If the Amenity object does not exist.
     """
     amenity = storage.get(Amenity, amenity_id)
-    if amenity:
-        storage.delete(amenity)
-        storage.save()
-        return jsonify({})
-    abort(404)
+    if amenity is None:
+        return jsonify({'error': 'Amenity not found'}), 404
+    storage.delete(amenity)
+    storage.save()
+    return jsonify({}), 200
 
 
 @app_views.route('/amenities', methods=['POST'], strict_slashes=False)
